@@ -1,12 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <string.h>
-
-int **str_to_array(char *command_line);
-int exec_new_programm(char **command_list);
+#include "holberton.h"
 
 int main(void)
 {
@@ -31,12 +23,12 @@ int **str_to_array(char *command_line)
     int i = 0, j = 0, k = 0, l = 0;
 
     tmp1 = strdup(command_line);
-	token = strtok(tmp1, " \n");
+    token = strtok(tmp1, " \n");
     while (token != NULL)
     {
-		token = strtok(NULL, " \n");
-		i++;
-	}
+        token = strtok(NULL, " \n");
+        i++;
+    }
     free(tmp1);
     if (i != 0)
     {
