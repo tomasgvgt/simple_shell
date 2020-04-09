@@ -1,20 +1,20 @@
 #include "holberton.h"
 
 /**
- * _strlen - Returns the lenght of a string. 
+ * _strlen - Returns the lenght of a string.
  * @s: String
- * Return: Lenght of the string. 
+ * Return: Lenght of the string.
  */
 
 int _strlen(char *s)
 {
-    int i;
+	int i;
 
-    for (i = 0; s[i] != '\0'; ++i)
-    {
-    }
+	for (i = 0; s[i] != '\0'; ++i)
+	{
+	}
 
-    return (i);
+	return (i);
 }
 
 /**
@@ -29,14 +29,14 @@ int _strlen(char *s)
 char *_strncpy(char *dest, char *src, int n)
 {
 
-    int i;
+	int i;
 
-    for (i = 0; i < n && src[i] != '\0'; i++)
-        dest[i] = src[i];
-    for (; i < n; i++)
-        dest[i] = '\0';
+	for (i = 0; i < n && src[i] != '\0'; i++)
+		dest[i] = src[i];
+	for (; i < n; i++)
+		dest[i] = '\0';
 
-    return (dest);
+	return (dest);
 }
 
 #include <stdlib.h>
@@ -51,22 +51,22 @@ char *_strncpy(char *dest, char *src, int n)
 
 char *_strdup(char *str)
 {
-    int i, j;
-    char *a;
+	int i, j;
+	char *a;
 
-    if (str == NULL)
-        return (NULL);
-    for (i = 0; str[i]; i++)
-    {
-    }
-    a = malloc((i + 1) * sizeof(char));
-    if (a != NULL)
-    {
-        for (j = 0; str[j]; j++)
-            a[j] = str[j];
-        a[j] = '\0';
-    }
-    else
-        return (NULL);
-    return (a);
+	if (str == NULL)
+		return (NULL);
+	for (i = 0; str[i]; i++)
+	{
+	}
+	a = malloc((i + 1) * sizeof(char));
+	if (a != NULL)
+	{
+		for (j = 0; str[j]; j++)
+			a[j] = str[j];
+		a[j] = '\0';
+	}
+	else
+		return (NULL);
+	return (a);
 }
