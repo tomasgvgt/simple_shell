@@ -1,4 +1,5 @@
 #include "holberton.h"
+extern char **environ;
 
 /**
  * main - Prints the prompt and calls all
@@ -17,10 +18,11 @@ int main(void)
 	{
 		write(STDOUT_FILENO, "My_Shell$ ", 10);
 		i = getline(&line, &len, stdin);
-		str_to_array((char *)line);
+		str_to_array(line);
 		free(line);
 		line = NULL;
 	}
+	write(STDOUT_FILENO, "\n", 1);
 	return (0);
 }
 
@@ -30,19 +32,19 @@ int main(void)
  * Return: A list of strings.
  */
 
-int **str_to_array(char *command_line)
+char **str_to_array(char *command_line)
 {
-	char **token_array, *token, *tmp1 = 0;
+	char **token_array, *token, *tmp = 0;
 	int i = 0, j = 0, k = 0, l = 0;
 
-	tmp1 = _strdup(command_line);
-	token = strtok(tmp1, " \n");
+	tmp = strdup(command_line);
+	token = strtok(tmp, " \n");
 	while (token != NULL)
 	{
 		token = strtok(NULL, " \n");
 		i++;
 	}
-	free(tmp1);
+	free(tmp);
 	if (i != 0)
 	{
 		token_array = malloc((sizeof(char *)) * (i + 1));
@@ -83,9 +85,10 @@ int **str_to_array(char *command_line)
 
 int exec_new_programm(char **command_list)
 {
-	char *envp[] = {NULL};
 	pid_t childpid;
 	int status;
+	struct stat st;
+	char *directory;
 
 	switch (childpid = fork())
 	{
@@ -93,12 +96,85 @@ int exec_new_programm(char **command_list)
 		perror("fork error");
 		return (1);
 	case 0:
-		if (execve(command_list[0], command_list, envp) == -1)
-			exit(EXIT_FAILURE);
-		else
-			exit(EXIT_SUCCESS);
+		if  (stat(command_list[0], &st) == 0 && st.st_mode & S_IXUSR)
+        {
+            if (execve(command_list[0], command_list, environ) == -1)
+            {
+                perror("My_Shell$ Error");
+                exit(EXIT_FAILURE);
+		    }
+            else
+                exit(EXIT_SUCCESS);
+        }
+        else
+        {
+            directory = _path(command_list[0]);
+            if (execve(directory, command_list, environ) == -1)
+            {
+                free(directory);
+                perror("My_Shell$ Error");
+                exit(EXIT_FAILURE);
+            }      
+            else
+                exit(EXIT_SUCCESS);
+        } 
 	default:
 		wait(&status);
 	}
 	return (0);
+}
+
+char *_path(char *command)
+{
+    int i = 0;
+    char var[] = "PATH", *path, *token, *env, *dir_temp;
+
+
+    while (environ[i])
+    {
+        env = strdup(environ[i]);
+        token = strtok(env, "=");
+        if (strcmp(token, var) == 0)
+        {
+            token = strtok(NULL, "=");
+            dir_temp = strdup(token);
+            path = directory(dir_temp, command);
+            free(dir_temp);
+        }
+        free(env);
+        i++;
+    }
+
+    return(path);
+}
+
+char *directory(char *temporal_dir, char *command)
+{
+    char *path, *token, flag = 0;
+    struct stat st;
+
+	token = strtok(temporal_dir, ":");
+	while (token != NULL)
+	{
+        /* poerle el directorio del path mas slash / mas el commando del usuario (..../ls) al path */
+        /*printf("token -> %s\n\n", token); */
+        path = malloc(strlen(token) + 1 + strlen(command) + 1);
+        strcpy(path, token);
+        _strcat(path, command);
+        /*checkear si el path modificado existe,  si existe retornarlo al fork y hacer execve en el child */
+        if  (stat(path, &st) == 0 && st.st_mode & S_IXUSR)
+		{
+			flag++;
+			break;
+		}
+		token = strtok(NULL, ":");
+        free(path);  
+	}
+	if (flag == 1)
+    	return(path);
+	else
+	{
+		perror("My_Shell$ Error");
+        return("Error");
+	}
 }
