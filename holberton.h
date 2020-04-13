@@ -8,6 +8,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 #include <string.h>
+extern char **environ;
 
 char **str_to_array(char *command_line);
 int exec_new_programm(char **command_list);

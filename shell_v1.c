@@ -1,10 +1,8 @@
 #include "holberton.h"
-extern char **environ;
 
 /**
  * main - Prints the prompt and calls all
  * the functions needed to run the shell.
- *
  * Return: Always 0.
  */
 
@@ -88,7 +86,7 @@ int exec_new_programm(char **command_list)
 	pid_t childpid;
 	int status;
 	struct stat st;
-	char *directory;
+	char *directory, *not_command = {"it isn't a command"};
 
 	switch (childpid = fork())
 	{
@@ -109,14 +107,22 @@ int exec_new_programm(char **command_list)
         else
         {
             directory = _path(command_list[0]);
-            if (execve(directory, command_list, environ) == -1)
-            {
-                free(directory);
+			if (strcmp(directory, not_command) == 0)
+			{
                 perror("My_Shell$ Error");
                 exit(EXIT_FAILURE);
-            }      
-            else
-                exit(EXIT_SUCCESS);
+			}
+			else
+			{
+				if (execve(directory, command_list, environ) == -1)
+				{
+					free(directory);
+					perror("My_Shell$ Error");
+					exit(EXIT_FAILURE);
+				}      
+				else
+					exit(EXIT_SUCCESS);
+			}
         } 
 	default:
 		wait(&status);
@@ -144,24 +150,21 @@ char *_path(char *command)
         free(env);
         i++;
     }
-
     return(path);
 }
 
 char *directory(char *temporal_dir, char *command)
 {
-    char *path, *token, flag = 0;
+    char *path, *token, slash[] = {'/'}, flag = 0, *not_command = {"it isn't a command"};
     struct stat st;
 
 	token = strtok(temporal_dir, ":");
 	while (token != NULL)
 	{
-        /* poerle el directorio del path mas slash / mas el commando del usuario (..../ls) al path */
-        /*printf("token -> %s\n\n", token); */
-        path = malloc(strlen(token) + 1 + strlen(command) + 1);
+        path = malloc(_strlen(token) + 1 + _strlen(command) + 1);
         strcpy(path, token);
-        _strcat(path, command);
-        /*checkear si el path modificado existe,  si existe retornarlo al fork y hacer execve en el child */
+		strcat(path, slash);
+		strcat(path, command);
         if  (stat(path, &st) == 0 && st.st_mode & S_IXUSR)
 		{
 			flag++;
@@ -171,10 +174,7 @@ char *directory(char *temporal_dir, char *command)
         free(path);  
 	}
 	if (flag == 1)
-    	return(path);
+		return(path);
 	else
-	{
-		perror("My_Shell$ Error");
-        return("Error");
-	}
+		return(not_command);
 }
