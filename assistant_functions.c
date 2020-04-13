@@ -48,18 +48,19 @@ char *_strncpy(char *dest, char *src, int n)
 
 char *_strdup(char *str)
 {
-	int i, j;
+	int i = 0, j = 0;
 	char *a = NULL;
 
 	if (str == NULL)
 		return (NULL);
-	for (i = 0; str[i] != '\0'; i++)
+	while (str[i] != '\0')
 	{
+		i++;
 	}
-	a = malloc((i + 1) * sizeof(char));
+	a = calloc((i + 1), sizeof(char));
 	if (a != NULL)
 	{
-		for (j = 0; str[j]; j++)
+		for (; str[j]; j++)
 			a[j] = str[j];
 		a[j] = '\0';
 	}
@@ -69,22 +70,47 @@ char *_strdup(char *str)
 }
 
 /**
-  * _strcat - 
-  * @
-  * @
-  * Return:
-  **/
-/* modificarla */
+ * *_strcat - concatenates two strings
+ *
+ * @dest: .
+ * @src: .
+ *
+ * Return: A char string.
+ */
+
 char *_strcat(char *dest, char *src)
 {
-	int i = 0, j = 0;
+	int i, j;
 
-	while (dest[i] != '\0')
-		i++;
-    dest[i++] = '/';
-	while ((dest[i++] = src[j++]) != '\0')
+	for (i = 0; dest[i] != '\0'; i++)
 	{
 	}
-	dest[i++] = '\0';
+
+	for (j = 0; src[j] != '\0'; i++, j++)
+		dest[i] = src[j];
+
+	dest[i] = '\0';
+
 	return (dest);
+}
+
+/**
+ * *_strcmp - compares two strings
+ *
+ * @s1:  first string .
+ * @s2: Second string.
+ *
+ * Return: the numer of characetras differnece between s1 amd s2.
+ */
+
+int _strcmp(char *s1, char *s2)
+{
+
+	for (; (*s1 != '\0' && *s2 != '\0') && *s1 == *s2; s1++, s2++)
+	{
+	}
+	if (*s1 == *s2)
+		return (0);
+	else
+		return (*s1 - *s2);
 }

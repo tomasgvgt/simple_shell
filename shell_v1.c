@@ -35,7 +35,7 @@ char **str_to_array(char *command_line)
 	char **token_array, *token, *tmp = 0;
 	int i = 0, j = 0, k = 0, l = 0;
 
-	tmp = strdup(command_line);
+	tmp = _strdup(command_line);
 	token = strtok(tmp, " \n");
 	while (token != NULL)
 	{
@@ -45,13 +45,15 @@ char **str_to_array(char *command_line)
 	free(tmp);
 	if (i != 0)
 	{
-		token_array = malloc((sizeof(char *)) * (i + 1));
+		/*token_array = malloc((sizeof(char *)) * (i + 1));*/
+		token_array = _calloc((i + 1), (sizeof(char *)));
 		if (token_array == NULL)
 			return (NULL);
 		token = strtok(command_line, " \n");
 		while (token != NULL)
 		{
-			token_array[j] = malloc(sizeof(char) * (_strlen(token) + 1));
+			/*token_array[j] = malloc(sizeof(char) * (_strlen(token) + 1));*/
+			token_array[j] = _calloc((_strlen(token) + 1), sizeof(char));
 			if (token_array[j] == NULL)
 			{
 				while (k < j)
@@ -94,23 +96,23 @@ int exec_new_programm(char **command_list)
 		perror("fork error");
 		return (1);
 	case 0:
-		if  (stat(command_list[0], &st) == 0 && st.st_mode & S_IXUSR)
-        {
-            if (execve(command_list[0], command_list, environ) == -1)
-            {
-                perror("My_Shell$ Error");
-                exit(EXIT_FAILURE);
-		    }
-            else
-                exit(EXIT_SUCCESS);
-        }
-        else
-        {
-            directory = _path(command_list[0]);
-			if (strcmp(directory, not_command) == 0)
+		if (stat(command_list[0], &st) == 0 && st.st_mode & S_IXUSR)
+		{
+			if (execve(command_list[0], command_list, environ) == -1)
 			{
-                perror("My_Shell$ Error");
-                exit(EXIT_FAILURE);
+				perror("My_Shell$ Error");
+				exit(EXIT_FAILURE);
+			}
+			else
+				exit(EXIT_SUCCESS);
+		}
+		else
+		{
+			directory = _path(command_list[0]);
+			if (_strcmp(directory, not_command) == 0)
+			{
+				perror("My_Shell$ Error");
+				exit(EXIT_FAILURE);
 			}
 			else
 			{
@@ -119,11 +121,11 @@ int exec_new_programm(char **command_list)
 					free(directory);
 					perror("My_Shell$ Error");
 					exit(EXIT_FAILURE);
-				}      
+				}
 				else
 					exit(EXIT_SUCCESS);
 			}
-        } 
+		}
 	default:
 		wait(&status);
 	}
@@ -132,49 +134,49 @@ int exec_new_programm(char **command_list)
 
 char *_path(char *command)
 {
-    int i = 0;
-    char var[] = "PATH", *path, *token, *env, *dir_temp;
+	int i = 0;
+	char var[] = "PATH", *path, *token, *env, *dir_temp;
 
-
-    while (environ[i])
-    {
-        env = strdup(environ[i]);
-        token = strtok(env, "=");
-        if (strcmp(token, var) == 0)
-        {
-            token = strtok(NULL, "=");
-            dir_temp = strdup(token);
-            path = directory(dir_temp, command);
-            free(dir_temp);
-        }
-        free(env);
-        i++;
-    }
-    return(path);
+	while (environ[i])
+	{
+		env = _strdup(environ[i]);
+		token = strtok(env, "=");
+		if (_strcmp(token, var) == 0)
+		{
+			token = strtok(NULL, "=");
+			dir_temp = _strdup(token);
+			path = directory(dir_temp, command);
+			free(dir_temp);
+		}
+		free(env);
+		i++;
+	}
+	return (path);
 }
 
 char *directory(char *temporal_dir, char *command)
 {
-    char *path, *token, slash[] = {'/'}, flag = 0, *not_command = {"it isn't a command"};
-    struct stat st;
+	char *path, *token, slash[] = {'/'}, flag = 0, *not_command = {"it isn't a command"};
+	struct stat st;
 
 	token = strtok(temporal_dir, ":");
 	while (token != NULL)
 	{
-        path = malloc(_strlen(token) + 1 + _strlen(command) + 1);
-        strcpy(path, token);
-		strcat(path, slash);
-		strcat(path, command);
-        if  (stat(path, &st) == 0 && st.st_mode & S_IXUSR)
+		/*path = malloc(_strlen(token) + 1 + _strlen(command) + 1);*/
+		path = _calloc(_strlen(token) + _strlen(command) + 2, sizeof(char));
+		_strcpy(path, token);
+		_strcat(path, slash);
+		_strcat(path, command);
+		if (stat(path, &st) == 0 && st.st_mode & S_IXUSR)
 		{
 			flag++;
 			break;
 		}
 		token = strtok(NULL, ":");
-        free(path);  
+		free(path);
 	}
 	if (flag == 1)
-		return(path);
+		return (path);
 	else
-		return(not_command);
+		return (not_command);
 }
