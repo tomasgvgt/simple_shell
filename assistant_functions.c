@@ -39,9 +39,6 @@ char *_strncpy(char *dest, char *src, int n)
 	return (dest);
 }
 
-#include <stdlib.h>
-#include "holberton.h"
-
 /**
   * _strdup - Returns a pointer to a new string,
   * which is a duplicate of the string str.
@@ -52,11 +49,11 @@ char *_strncpy(char *dest, char *src, int n)
 char *_strdup(char *str)
 {
 	int i, j;
-	char *a;
+	char *a = NULL;
 
 	if (str == NULL)
 		return (NULL);
-	for (i = 0; str[i]; i++)
+	for (i = 0; str[i] != '\0'; i++)
 	{
 	}
 	a = malloc((i + 1) * sizeof(char));
@@ -69,4 +66,25 @@ char *_strdup(char *str)
 	else
 		return (NULL);
 	return (a);
+}
+
+/**
+  * _strcat - 
+  * @
+  * @
+  * Return:
+  **/
+/* modificarla */
+char *_strcat(char *dest, char *src)
+{
+	int i = 0, j = 0;
+
+	while (dest[i] != '\0')
+		i++;
+    dest[i++] = '/';
+	while ((dest[i++] = src[j++]) != '\0')
+	{
+	}
+	dest[i++] = '\0';
+	return (dest);
 }
