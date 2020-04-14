@@ -11,7 +11,7 @@
 
 extern char **environ;
 char **str_to_array(char *command_line);
-int exec_new_programm(char **command_list);
+int exec_new_programm(char **command_list, int i, char *command_line);
 int _strlen(char *s);
 char *_strncpy(char *dest, char *src, int n);
 char *_strdup(char *str);
@@ -22,5 +22,7 @@ char *_strdup(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strcpy(char *dest, char *src);
 void *_calloc(unsigned int nmemb, unsigned int size);
+void a_exit(char **text, int i, char *command_line);
+void _env(void);
 
 #endif
