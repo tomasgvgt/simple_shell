@@ -9,6 +9,8 @@
 #include <sys/stat.h>
 #include <string.h>
 
+#define biff_zise 1024
+#define strtok_delim " \n\r\a\t"
 extern char **environ;
 char **str_to_array(char *command_line);
 int exec_new_programm(char **command_list, int i, char *command_line);
@@ -24,5 +26,6 @@ char *_strcpy(char *dest, char *src);
 void *_calloc(unsigned int nmemb, unsigned int size);
 void a_exit(char **text, int i, char *command_line);
 void _env(void);
+void signal_handler(int signal);
 
 #endif

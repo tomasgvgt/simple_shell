@@ -14,6 +14,7 @@ int main(void)
 
 	while (i != -1)
 	{
+		signal(SIGINT, signal_handler);
 		write(STDOUT_FILENO, "My_Shell$ ", 10);
 		i = getline(&line, &len, stdin);
 		str_to_array(line);

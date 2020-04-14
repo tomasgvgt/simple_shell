@@ -55,14 +55,14 @@ void a_exit(char **text, int i, char *command_line)
 {
     int l = 0;
 
-	while (l < i)
+    while (l < i)
     {
         free(text[l]);
         l++;
     }
     free(text);
     free(command_line);
-	exit(EXIT_SUCCESS);
+    exit(EXIT_SUCCESS);
 }
 
 /**
@@ -81,4 +81,9 @@ void _env(void)
         printf("%s\n", environ[i]);
         i++;
     }
+}
+
+void signal_handler(int signal __attribute__((unused)))
+{
+    write(STDOUT_FILENO, "\nMy_Shell$ ", 11);
 }
