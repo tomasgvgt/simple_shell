@@ -15,7 +15,8 @@ int main(void)
 	while (i != -1)
 	{
 		signal(SIGINT, signal_handler);
-		write(STDOUT_FILENO, "My_Shell$ ", 10);
+		if (isatty(STDIN_FILENO) == 1)
+			write(STDOUT_FILENO, "My_Shell$ ", 10);
 		i = getline(&line, &len, stdin);
 		str_to_array(line);
 		free(line);
@@ -37,10 +38,10 @@ char **str_to_array(char *command_line)
 	int i = 0, j = 0, k = 0, l = 0;
 
 	tmp = _strdup(command_line);
-	token = strtok(tmp, " \n");
+	token = strtok(tmp, strtok_delim);
 	while (token != NULL)
 	{
-		token = strtok(NULL, " \n");
+		token = strtok(NULL, strtok_delim);
 		i++;
 	}
 	free(tmp);
@@ -50,7 +51,7 @@ char **str_to_array(char *command_line)
 		token_array = _calloc((i + 1), (sizeof(char *)));
 		if (token_array == NULL)
 			return (NULL);
-		token = strtok(command_line, " \n");
+		token = strtok(command_line, strtok_delim);
 		while (token != NULL)
 		{
 			/*token_array[j] = malloc(sizeof(char) * (_strlen(token) + 1));*/
@@ -62,7 +63,7 @@ char **str_to_array(char *command_line)
 				free(token_array);
 			}
 			_strncpy(token_array[j], token, _strlen(token) + 1);
-			token = strtok(NULL, " \n");
+			token = strtok(NULL, strtok_delim);
 			j++;
 		}
 		token_array[j] = NULL;
