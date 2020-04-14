@@ -32,7 +32,7 @@ int main(void)
 
 char **str_to_array(char *command_line)
 {
-	char **token_array, *token, *tmp = 0;
+	char **token_array, *token, *tmp = 0, *exit = {"exit"}, *envi = {"env"};
 	int i = 0, j = 0, k = 0, l = 0;
 
 	tmp = _strdup(command_line);
@@ -65,7 +65,11 @@ char **str_to_array(char *command_line)
 			j++;
 		}
 		token_array[j] = NULL;
-		exec_new_programm(token_array);
+		if (_strcmp(token_array[0], exit) == 0)
+			a_exit(token_array, i, command_line);
+		if (_strcmp(token_array[0], envi) == 0)
+			_env();
+		exec_new_programm(token_array, i, command_line);
 		while (l < i)
 		{
 			free(token_array[l]);
@@ -83,10 +87,10 @@ char **str_to_array(char *command_line)
  * Return: 0 if success, 1 if failed.
  */
 
-int exec_new_programm(char **command_list)
+int exec_new_programm(char **command_list, int i, char *command_line)
 {
 	pid_t childpid;
-	int status;
+	int status, l = 0;
 	struct stat st;
 	char *directory, *not_command = {"it isn't a command"};
 
@@ -111,6 +115,13 @@ int exec_new_programm(char **command_list)
 			directory = _path(command_list[0]);
 			if (_strcmp(directory, not_command) == 0)
 			{
+				while (l < i)
+				{
+					free(command_list[l]);
+					l++;
+				}
+				free(command_list);
+				free(command_line);
 				perror("My_Shell$ Error");
 				exit(EXIT_FAILURE);
 			}

@@ -44,3 +44,41 @@ void *_calloc(unsigned int nmemb, unsigned int size)
         s[i] = 0;
     return (s);
 }
+
+/**
+ * _exit - 
+ * @
+ * Return: Pointer to the allocated memory.
+ */
+
+void a_exit(char **text, int i, char *command_line)
+{
+    int l = 0;
+
+	while (l < i)
+    {
+        free(text[l]);
+        l++;
+    }
+    free(text);
+    free(command_line);
+	exit(EXIT_SUCCESS);
+}
+
+/**
+ * _env - 
+ * @
+ * Return: Pointer to the allocated memory.
+ */
+
+void _env(void)
+{
+    unsigned int i;
+
+    i = 0;
+    while (environ[i] != NULL)
+    {
+        printf("%s\n", environ[i]);
+        i++;
+    }
+}
