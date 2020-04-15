@@ -22,7 +22,7 @@ int main(void)
 		free(line);
 		line = NULL;
 	}
-	write(STDOUT_FILENO, "\n", 1);
+	/*write(STDOUT_FILENO, "\n", 1);*/
 	return (0);
 }
 
@@ -107,7 +107,8 @@ int exec_new_programm(char **command_list, int i, char *command_line)
 			if (execve(command_list[0], command_list, environ) == -1)
 			{
 				perror("My_Shell$ Error");
-				exit(EXIT_FAILURE);
+				/*exit(EXIT_FAILURE);*/
+				return (0);
 			}
 			else
 				exit(EXIT_SUCCESS);
@@ -124,7 +125,7 @@ int exec_new_programm(char **command_list, int i, char *command_line)
 				}
 				free(command_list);
 				free(command_line);
-				perror("My_Shell$ Error");
+				perror("My_Shell$");
 				exit(EXIT_FAILURE);
 			}
 			else
@@ -133,7 +134,8 @@ int exec_new_programm(char **command_list, int i, char *command_line)
 				{
 					free(directory);
 					perror("My_Shell$ Error");
-					exit(EXIT_FAILURE);
+					/* exit(EXIT_FAILURE); */
+					return (0);
 				}
 				else
 					exit(EXIT_SUCCESS);
