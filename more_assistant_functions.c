@@ -11,14 +11,14 @@
 
 char *_strcpy(char *dest, char *src)
 {
-    int i;
+	int i;
 
-    for (i = 0; src[i] != '\0'; i++)
-    {
-        dest[i] = src[i];
-    }
-    dest[i] = ('\0');
-    return (dest);
+	for (i = 0; src[i] != '\0'; i++)
+	{
+		dest[i] = src[i];
+	}
+	dest[i] = ('\0');
+	return (dest);
 }
 
 /**
@@ -30,60 +30,64 @@ char *_strcpy(char *dest, char *src)
 
 void *_calloc(unsigned int nmemb, unsigned int size)
 {
-    char *s;
-    unsigned int i;
+	char *s;
+	unsigned int i;
 
-    if (nmemb == 0 || size == 0)
-        return (NULL);
+	if (nmemb == 0 || size == 0)
+		return (NULL);
 
-    s = malloc(nmemb * size);
-    if (s == NULL)
-        return (NULL);
+	s = malloc(nmemb * size);
+	if (s == NULL)
+		return (NULL);
 
-    for (i = 0; i < (size * nmemb); i++)
-        s[i] = 0;
-    return (s);
+	for (i = 0; i < (size * nmemb); i++)
+		s[i] = 0;
+	return (s);
 }
 
 /**
- * _exit - 
- * @
+ * a_exit - Closes the program properly if the user types exit.
+ * @text: used to free memory.
+ * @i: total of commands typed by user.
+ * @command_line: 1st command typed by user.
  * Return: Pointer to the allocated memory.
  */
 
 void a_exit(char **text, int i, char *command_line)
 {
-    int l = 0;
+	int l = 0;
 
-    while (l < i)
-    {
-        free(text[l]);
-        l++;
-    }
-    free(text);
-    free(command_line);
-    exit(EXIT_SUCCESS);
+	while (l < i)
+	{
+		free(text[l]);
+		l++;
+	}
+	free(text);
+	free(command_line);
+	exit(EXIT_SUCCESS);
 }
 
 /**
- * _env - 
- * @
- * Return: Pointer to the allocated memory.
+ * _env - Prints the environment.
  */
 
 void _env(void)
 {
-    unsigned int i;
+	unsigned int i;
 
-    i = 0;
-    while (environ[i] != NULL)
-    {
-        printf("%s\n", environ[i]);
-        i++;
-    }
+	i = 0;
+	while (environ[i] != NULL)
+	{
+		printf("%s\n", environ[i]);
+		i++;
+	}
 }
 
+/**
+ * signal_handler - Writes the prompt if CRL + c.
+ * @signal: Previous value of the signal handler.
+*/
 void signal_handler(int signal __attribute__((unused)))
 {
-    write(STDOUT_FILENO, "\nMy_Shell$ ", 11);
+	write(STDOUT_FILENO, "\nMy_Shell$ ", 11);
 }
