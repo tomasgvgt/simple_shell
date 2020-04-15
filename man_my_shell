@@ -1,0 +1,48 @@
+.TH _HSH 1 "16 Apr 2020" "1.0" "User commands"
+.SH NAME
+.B hsh
+- Command language interpreter
+.SH SYNOPSIS
+./hsh
+.SH DESCRIPTION
+hsh is an sh-compatible command language interpreter that executes commands read from the standard input or from a file.
+
+--help
+        display this help and exit
+
+--version
+        output version information and exit
+
+The shell should work in interactive and non-interactive mode
+.SH OPTIONS
+.SH ARGUMENTS
+.SH INVOCATION
+.SH DEFINITIONS
+
+A login shell is one whose first character of argument zero is a -, or one started with the --login option.
+
+An interactive shell is one started without non-option arguments and without the -c option whose standard input and error are both connected to terminals (as determined by isatty(3)), or one started with the -i option. PS1 is set and $- includes i if bash is interactive, allowing a shell script or a startup file to test this state.
+
+.SH EXAMPLES
+
+./hsh
+$ ls
+assistant_functions.c  README.md                hsh.c
+holberton.h            more_assistant_functions.c  
+$ls -l
+-rw-rw-r-- 1 vagrant vagrant  1717 Apr 15 20:06 assistant_functions.c
+-rw-rw-r-- 1 vagrant vagrant   831 Apr 14 22:23 holberton.h
+-rw-rw-r-- 1 vagrant vagrant  4316 Apr 15 20:11 hsh.c
+-rw-rw-r-- 1 vagrant vagrant  1564 Apr 15 20:06 more_assistant_functions.c
+-rw-rw-r-- 1 vagrant vagrant  1660 Apr  3 01:31 README.md
+
+.SH SEE ALSO
+hsh(3)
+
+B. bash
+- should give you access to the complete manual.
+
+.SH BUGS
+No known bugs.
+.SH AUTHOR
+Tomas Gomez, Juan Pablo Yepes.
