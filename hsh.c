@@ -16,7 +16,7 @@ int main(void)
 	{
 		signal(SIGINT, signal_handler);
 		if (isatty(STDIN_FILENO) == 1)
-			write(STDOUT_FILENO, "My_Shell$ ", 10);
+			write(STDOUT_FILENO, "$ ", 10);
 		i = getline(&line, &len, stdin);
 		str_to_array(line);
 		free(line);
@@ -98,10 +98,7 @@ int exec_new_programm(char **command_list, int i, char *command_line)
 		if (stat(command_list[0], &st) == 0 && st.st_mode & S_IXUSR)
 		{
 			if (execve(command_list[0], command_list, environ) == -1)
-			{
-				perror("My_Shell$ Error");
-				exit(EXIT_FAILURE);
-			}
+				perror("$ Error"), exit(EXIT_FAILURE);
 			else
 				exit(EXIT_SUCCESS);
 		}
@@ -112,16 +109,13 @@ int exec_new_programm(char **command_list, int i, char *command_line)
 			{
 				while (l < i)
 					free(command_list[l]), l++;
-				free(command_list), free(command_line), perror("My_Shell$");
+				free(command_list), free(command_line), perror("$ ");
 				exit(EXIT_FAILURE);
 			}
 			else
 			{
 				if (execve(directory, command_list, environ) == -1)
-				{
-					free(directory), perror("My_Shell$ Error");
-					exit(EXIT_FAILURE);
-				}
+					free(directory), perror("$ Error"), exit(EXIT_FAILURE);
 				else
 					exit(EXIT_SUCCESS);
 			}
