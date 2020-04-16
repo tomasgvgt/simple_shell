@@ -90,5 +90,5 @@ void _env(void)
 */
 void signal_handler(int signal __attribute__((unused)))
 {
-	write(STDOUT_FILENO, "\nhsh$ ", 6);
+	write(STDOUT_FILENO, "\n$ ", 3);
 }
