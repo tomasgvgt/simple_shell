@@ -49,11 +49,12 @@ void *_calloc(unsigned int nmemb, unsigned int size)
  * a_exit - Closes the program properly if the user types exit.
  * @text: used to free memory.
  * @i: total of commands typed by user.
- * @command_line: 1st command typed by user.
+ * @cmd_line: 1st command typed by user.
+ * @exit_status: exit status
  * Return: Pointer to the allocated memory.
  */
 
-void a_exit(char **text, int i, char *command_line)
+void a_exit(char **text, int i, char *cmd_line, int exit_status)
 {
 	int l = 0;
 
@@ -63,8 +64,8 @@ void a_exit(char **text, int i, char *command_line)
 		l++;
 	}
 	free(text);
-	free(command_line);
-	exit(EXIT_SUCCESS);
+	free(cmd_line);
+	exit(exit_status);
 }
 
 /**
@@ -89,5 +90,5 @@ void _env(void)
 */
 void signal_handler(int signal __attribute__((unused)))
 {
-	write(STDOUT_FILENO, "\nMy_Shell$ ", 11);
+	write(STDOUT_FILENO, "\nhsh$ ", 6);
 }
