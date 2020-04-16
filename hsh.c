@@ -7,7 +7,7 @@
  * Return: Always 0.
  */
 
-int main(__attribute__((unused))int ac, char **av)
+int main(__attribute__((unused)) int ac, char **av)
 {
 	char *line = NULL;
 	size_t len = 0;
@@ -18,7 +18,7 @@ int main(__attribute__((unused))int ac, char **av)
 		count++;
 		signal(SIGINT, signal_handler);
 		if (isatty(STDIN_FILENO) == 1)
-			write(STDOUT_FILENO, "hsh$ ", 5);
+			write(STDOUT_FILENO, "$ ", 2);
 		i = getline(&line, &len, stdin);
 		str_to_array(line, count, av);
 		free(line);
@@ -103,7 +103,7 @@ int _exec(char **cmd_list, int i, char *cmd_line, int count, char **argv)
 		if (stat(cmd_list[0], &st) == 0 && st.st_mode & S_IXUSR)
 		{
 			if (execve(cmd_list[0], cmd_list, environ) == -1)
-				perror("hsh$ Error"), exit(exit_status);
+				perror("$ Error"), exit(exit_status);
 			else
 				exit(EXIT_SUCCESS);
 		}
@@ -118,7 +118,7 @@ int _exec(char **cmd_list, int i, char *cmd_line, int count, char **argv)
 			else
 			{
 				if (execve(directory, cmd_list, environ) == -1)
-					free(directory), perror("hsh$ Error"), exit(exit_status);
+					free(directory), perror("$ Error"), exit(exit_status);
 				else
 					exit(EXIT_SUCCESS);
 			}
