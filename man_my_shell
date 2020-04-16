@@ -1,40 +1,63 @@
-.TH _HSH 1 "16 Apr 2020" "1.0" "User commands"
+.TH _HSH 1 "16 Apr 2020" "1.0" "Simple Shell"
 .SH NAME
-.B hsh
+.B Simple Shell
 - Command language interpreter
 .SH SYNOPSIS
 ./hsh
+<command> <argument 1> <argument 2>
 .SH DESCRIPTION
-hsh is an sh-compatible command language interpreter that executes commands read from the standard input or from a file.
+Simple shell is an sh-compatible command language interpreter
+that executes commands read from the standard input or from a file.
+The shell should work in interactive and non-interactive mode.
 
---help
-        display this help and exit
+.SH PROMPT
+When used interactively, the Simple Shell prompts
+the value "$" before reading a command.
 
---version
-        output version information and exit
+.SH COMMANDS
+When the shell receives a line of text
+it separates it into an array of strings containing
+the first command and its following arguments.
 
-The shell should work in interactive and non-interactive mode
-.SH OPTIONS
+.SH PATH
+The Simple shell verifys if the first command is in fact a command.
+When verified, the shell creates a child process using the function fork
+and executes the given command in the child process using the function excev.
+
 .SH ARGUMENTS
-.SH INVOCATION
-.SH DEFINITIONS
+When the command is excecuted, the arguments given by the user are excecuted with the program using the function excev.
 
-A login shell is one whose first character of argument zero is a -, or one started with the --login option.
+.SH EXCECUTION
+Shell creates a child process to excecute the command and arguments,
+while the child process excecutes the program, the parent process waits 
+for the termination of the child.
+if the excecution fails, a status is sent to the parent process, so the program can
+finish correctly. A new prompt will be printed and the shell will be ready to receive
+a new line of text from the user. 
 
-An interactive shell is one started without non-option arguments and without the -c option whose standard input and error are both connected to terminals (as determined by isatty(3)), or one started with the -i option. PS1 is set and $- includes i if bash is interactive, allowing a shell script or a startup file to test this state.
+.SH EXIT 
+The shell receives two commands to exit correctly:
+1. if the user types "exit", the shell will be terminated. 
+2. if the user uses the CRL + d signal, the program will receive it as EOF and the shell will be terminated. 
 
 .SH EXAMPLES
 
-./hsh
+apple@MacBook-Pro-2 ~ % ./hsh
 $ ls
 assistant_functions.c  README.md                hsh.c
 holberton.h            more_assistant_functions.c  
+
+apple@MacBook-Pro-2 ~ % ./hsh
 $ls -l
 -rw-rw-r-- 1 vagrant vagrant  1717 Apr 15 20:06 assistant_functions.c
 -rw-rw-r-- 1 vagrant vagrant   831 Apr 14 22:23 holberton.h
 -rw-rw-r-- 1 vagrant vagrant  4316 Apr 15 20:11 hsh.c
 -rw-rw-r-- 1 vagrant vagrant  1564 Apr 15 20:06 more_assistant_functions.c
 -rw-rw-r-- 1 vagrant vagrant  1660 Apr  3 01:31 README.md
+
+apple@MacBook-Pro-2 ~ % ./hsh
+$exit
+apple@MacBook-Pro-2 ~ % 
 
 .SH SEE ALSO
 hsh(3)
@@ -43,6 +66,7 @@ B. bash
 - should give you access to the complete manual.
 
 .SH BUGS
-No known bugs.
+No known bugs. 
+
 .SH AUTHOR
 Tomas Gomez, Juan Pablo Yepes.
