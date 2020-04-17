@@ -9,7 +9,8 @@
  * Return: a char string
  */
 
-char *_strcpy(char *dest, char *src)
+char *
+_strcpy(char *dest, char *src)
 {
 	int i;
 
@@ -79,7 +80,8 @@ void _env(void)
 	i = 0;
 	while (environ[i] != NULL)
 	{
-		printf("%s\n", environ[i]);
+		write(STDOUT_FILENO, environ[i], _strlen(environ[i]));
+		/*printf("%s\n", environ[i]);*/
 		i++;
 	}
 }
