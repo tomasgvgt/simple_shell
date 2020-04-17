@@ -57,7 +57,7 @@ char *_strdup(char *str)
 	{
 		i++;
 	}
-	a = calloc((i + 1), sizeof(char));
+	a = _calloc((i + 1), sizeof(char));
 	if (a != NULL)
 	{
 		for (; str[j]; j++)
