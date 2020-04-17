@@ -64,7 +64,8 @@ int str_to_array(char *cmd_line, int count, char **argv)
 			token = strtok(NULL, strtok_delim), j++;
 		}
 		token_array[j] = NULL;
-		if (_strcmp(token_array[0], envi) == 0)
+		if (_strcmp(token_array[0], envi) == 0 ||
+		 _strcmp(token_array[0], "printenv") == 0)
 			_env();
 		if (_strcmp(token_array[0], exit) == 0)
 			a_exit(token_array, i, cmd_line, exit_status);
